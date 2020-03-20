@@ -24,7 +24,7 @@ class Conv2D(Layer):
     def __call__(self, data: np.ndarray):
         '''%
         '''
-        assert len(data.shape) == 2
+        assert data.ndim == 2
         rolnum = data.shape[0] - self.kernel_size + 1
         colnum = data.shape[1] - self.kernel_size + 1
 
