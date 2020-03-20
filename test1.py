@@ -1,5 +1,5 @@
 import numpy as np
-
+# import tensorflow as tf
 from layers.model import Model
 from layers.conv2d import Conv2D
 
@@ -17,10 +17,12 @@ def main():
         [1, 0, -1],
         [1, 0, -1],
         [1, 0, -1]]
-    
-    conv1 = Conv2D(kernel_size=3, kernel_list=[np.array(kernel)])
-    print(conv1(np.array(data)))
 
+    conv1 = Conv2D(
+        kernel_size=3,
+        zero_pad='valid',
+        kernel_list=[np.array(kernel)])
+    print(conv1(np.array(data)))
 
 
 if __name__ == "__main__":
