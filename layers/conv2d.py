@@ -16,7 +16,7 @@ class Conv2D(Layer):
         assert type(stride) == int and stride > 0
         self.kernel_size = kernel_size
         self.zero_pad = zero_pad.lower()
-        self.stride=stride
+        self.stride = stride
         self.kernel_list = kernel_list
 
     @staticmethod
@@ -30,9 +30,18 @@ class Conv2D(Layer):
                 result += data1[i][j] * data2[i][j]
         return result
 
-    def __call__(self, data: np.ndarray):
-        '''%
-        '''
+    def forward(self, data: np.ndarray):
+        """Forward pass of layer
+        
+        Arguments:
+            data {np.ndarray} -- Input data
+        
+        Raises:
+            IndexError: zero_pad should be either "same" or "valid"
+        
+        Returns:
+            np.ndarray -- Result of forward pass:
+        """        
         assert data.ndim == 2
         p = None
         if self.zero_pad.lower() == 'same':
@@ -55,6 +64,11 @@ class Conv2D(Layer):
                 y = j * self.stride
                 for r in range(self.kernel_size):
                     for c in range(self.kernel_size):
-                        arr[r][c] = data[x + r][y + c]
+                        arr[r][c                        ] = data[x + r][y + c]
                 result[i][j] = self._conv(arr, self.kernel_list[0])
         return result
+
+    def __call__(self, data: np.ndarray):
+        '''%
+        '''
+        return self.forward(data)
