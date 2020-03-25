@@ -4,7 +4,7 @@ from .layer import Layer
 
 class Conv2D(Layer):
     def __init__(self, kernel_size=3, zero_pad='same', stride=1, kernel_list=[]):
-        """Convolution layer. Using N,H,W for input
+        """
         Keyword Arguments:
             kernel_size {int} -- [Size of kernel] (default: {3})
             zero_pad {str} -- [Type of padding. Choices are 'valid', 'same'] (default: {'same'})
@@ -25,10 +25,9 @@ class Conv2D(Layer):
         '''
         assert data1.shape == data2.shape
         result = 0
-        for ch in range(data1.shape[0]):
-            for i in range(data1.shape[1]):
-                for j in range(data1.shape[2]):
-                    result += data1[ch][i][j] * data2[ch][i][j]
+        for i in range(data1.shape[0]):
+            for j in range(data1.shape[1]):
+                result += data1[i][j] * data2[i][j]
         return result
 
     def forward(self, data: np.ndarray):
@@ -43,7 +42,7 @@ class Conv2D(Layer):
         Returns:
             np.ndarray -- Result of forward pass:
         """
-        assert data.ndim == 3
+        assert data.ndim == 2
         p = None
         if self.zero_pad.lower() == 'same':
             p = (self.kernel_size - 1)/2
@@ -52,28 +51,22 @@ class Conv2D(Layer):
         else:
             raise IndexError('zero_pad should be either "same" or "valid"')
         data = np.pad(data, int(p), 'constant')
-        print(data)
-        channels = data.shape[0]
-        rolnum = int((data.shape[1] - self.kernel_size)/self.stride + 1)
-        colnum = int((data.shape[2] - self.kernel_size)/self.stride + 1)
-        print(
-            f'Number of output: {len(self.kernel_list)} * {rolnum} * {colnum} = {len(self.kernel_list) * rolnum * colnum}')
-        result = np.ndarray((len(self.kernel_list), rolnum, colnum))
+        rolnum = int((data.shape[0] - self.kernel_size)/self.stride + 1)
+        colnum = int((data.shape[1] - self.kernel_size)/self.stride + 1)
+        print(f'Number of output: {rolnum} * {colnum} = {rolnum * colnum}')
+        result = np.ndarray((rolnum, colnum))
 
         for i in range(rolnum):
             for j in range(colnum):
                 # print(f'Convolving for up-left({i}, {j}), down-right({i + self.kernel_size},{j + self.kernel_size})')
-                arr = np.ndarray(
-                    (channels, self.kernel_size, self.kernel_size))
+                arr = np.ndarray((self.kernel_size, self.kernel_size))
                 x = i * self.stride
                 y = j * self.stride
-                for ch in range(channels):
-                    for r in range(self.kernel_size):
-                        for c in range(self.kernel_size):
-                            arr[ch][r][c] = data[ch][x + r][y + c]
-
-                for out_ch, kernel in enumerate(self.kernel_list):
-                    result[out_ch][i][j] = self._conv(arr, kernel)
+                for r in range(self.kernel_size):
+                    for c in range(self.kernel_size):
+                        arr[r][c] = data[x + r][y + c]
+                for kernel in self.kernel_list:
+                    result[i][j] = self._conv(arr, kernel)
         return result
 
     def __call__(self, data: np.ndarray):
