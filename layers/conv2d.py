@@ -42,7 +42,6 @@ class Conv2D(Layer):
             raise IndexError('zero_pad should be either "same" or "valid"')
         data = np.pad(data, int(p), 'constant')
         print(data)
-        channels = data.shape[0]
         rolnum = int((data.shape[1] - self.kernel_size)/self.stride + 1)
         colnum = int((data.shape[2] - self.kernel_size)/self.stride + 1)
         print(
@@ -52,14 +51,9 @@ class Conv2D(Layer):
         for i in range(rolnum):
             for j in range(colnum):
                 # print(f'Convolving for up-left({i}, {j}), down-right({i + self.kernel_size},{j + self.kernel_size})')
-                arr = np.ndarray(
-                    (channels, self.kernel_size, self.kernel_size))
                 x = i * self.stride
                 y = j * self.stride
-                for ch in range(channels):
-                    for r in range(self.kernel_size):
-                        for c in range(self.kernel_size):
-                            arr[ch][r][c] = data[ch][x + r][y + c]
+                arr = data[:, x:x+self.kernel_size, y:y+self.kernel_size]
                 for out_ch, kernel in enumerate(self.kernel_list):
                     result[out_ch][i][j] = np.sum(np.multiply(arr, kernel))
         return result

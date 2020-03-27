@@ -66,7 +66,7 @@ def main():
         [69, 91, 127],
         [44, 72, 74]
     ]
-    print(f'Correct answer:\n{np.array(ans)}')
+    print(f'Correct answer:\n{np.array(ans) * 3}')
 
 
 if __name__ == "__main__":
