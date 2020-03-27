@@ -18,18 +18,7 @@ class Conv2D(Layer):
         self.zero_pad = zero_pad.lower()
         self.stride = stride
         self.kernel_list = kernel_list
-
-    @staticmethod
-    def _conv(data1: np.ndarray, data2: np.ndarray):
-        '''Do the actual convolution for a filter without sliding
-        '''
-        assert data1.shape == data2.shape
-        result = 0
-        for ch in range(data1.shape[0]):
-            for i in range(data1.shape[1]):
-                for j in range(data1.shape[2]):
-                    result += data1[ch][i][j] * data2[ch][i][j]
-        return result
+        self.input_ch = None
 
     def forward(self, data: np.ndarray):
         """Forward pass of layer
@@ -71,9 +60,8 @@ class Conv2D(Layer):
                     for r in range(self.kernel_size):
                         for c in range(self.kernel_size):
                             arr[ch][r][c] = data[ch][x + r][y + c]
-
                 for out_ch, kernel in enumerate(self.kernel_list):
-                    result[out_ch][i][j] = self._conv(arr, kernel)
+                    result[out_ch][i][j] = np.sum(np.multiply(arr, kernel))
         return result
 
     def __call__(self, data: np.ndarray):

@@ -21,4 +21,5 @@ class Model(Layer):
     def add(self, layer):
         '''%
         '''
-        return self._layer_list.append(layer)
+        self._layer_list.append(layer)
+        return self._layer_list
