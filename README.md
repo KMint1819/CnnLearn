@@ -7,7 +7,7 @@ A repository for implementing neural networks from scratch or notes about NN kno
 - ~~Pooling~~
 - ~~Conv: 3d kernel~~
 - Activation
-- Fully connected
+- ~~Fully connected~~
 - Random parameters (Random kernels)
 - Bias for conv and fc.
 - Even value of input size or kernel size of Conv

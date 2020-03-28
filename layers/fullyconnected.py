@@ -27,12 +27,12 @@ class FC(Layer):
         assert type(data) == np.ndarray and data.ndim == 1
         if self.n_input == None:
             self.n_input = data.size
-            self.weights = np.zeros((self.n_input, self.n_output))
+            self.weights = np.random.rand(self.n_input, self.n_output)
         elif data.size != self.n_input:
             print(
                 f'Shape of fully connected is not consistent. Expected {self.n_input} while getting {data.size}.')
             raise RuntimeError
-        
+        print(f'Fully connecting with data:\n{data}\n and weights({self.n_input * self.n_output}):\n{self.weights}')
         result = np.zeros((self.n_output))
         for i in range(self.n_output):
             print(f'Calculating output of {i+1}-th neuron')

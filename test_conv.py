@@ -1,6 +1,6 @@
 import numpy as np
 # import tensorflow as tf
-from layers.model import Model
+# from layers.model import Model
 from layers.conv2d import Conv2D
 
 
@@ -53,20 +53,20 @@ def main():
     ]
 
     conv1 = Conv2D(
+        n_kernels=2,
         kernel_size=3,
         zero_pad='valid',
-        stride=2,
-        kernel_list=[np.array(kernel)])
+        stride=2)
 
     print(conv1(np.array(data)))
 
     #
-    ans = [
-        [91, 100, 83],
-        [69, 91, 127],
-        [44, 72, 74]
-    ]
-    print(f'Correct answer:\n{np.array(ans) * 3}')
+    # ans = [
+    #     [91, 100, 83],
+    #     [69, 91, 127],
+    #     [44, 72, 74]
+    # ]
+    # print(f'Correct answer:\n{np.array(ans) * 3}')
 
 
 if __name__ == "__main__":
