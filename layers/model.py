@@ -1,7 +1,7 @@
 from .layer import Layer
 
 
-class Model(Layer):
+class Sequential(Layer):
     '''%
     '''
 
@@ -19,7 +19,13 @@ class Model(Layer):
         return data
 
     def add(self, layer):
-        '''%
-        '''
+        """Appending another layer or sub-model to the model
+
+        Arguments:
+            layer {Sequential or Layer} -- Layer or model to append
+
+        Returns:
+            Sequential -- Model after appending the layers
+        """
         self._layer_list.append(layer)
         return self._layer_list
